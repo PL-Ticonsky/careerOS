@@ -1,14 +1,19 @@
 # CareerOS
 
-MVP privado de búsqueda y seguimiento profesional, separado de ticonsky.dev. Carpeta solicitada: `CarrerOS`.
+MVP privado de búsqueda y seguimiento profesional, separado de ticonsky.dev. Repositorio: `careerOS`. La carpeta local original se llama `CarrerOS`.
+
+## Entrega a otro desarrollador
+
+Empieza por [la guía de entrega](docs/HANDOFF.md), consulta [la arquitectura](docs/ARQUITECTURA.md) y [el contrato de la API local](docs/API.md). El [catálogo de fuentes](FUENTES.md) distingue conectores implementados de integraciones pendientes.
 
 ## Ejecutar
 
-Requiere Python 3.11 o posterior. No necesita instalar paquetes.
+Requiere Python 3.11 o posterior. No necesita instalar paquetes. Node.js es opcional y solo se utiliza para comprobar la sintaxis de JavaScript. En Windows puedes usar `python` en lugar de `python3`.
 
 ```bash
-cd /home/ticonksy/Documents/ChatGPT/Trabajo/CarrerOS
-python app.py
+git clone https://github.com/PL-Ticonsky/careerOS.git
+cd careerOS
+python3 app.py
 ```
 
 Abre http://127.0.0.1:8765. Para otro puerto: `python app.py --port 8766`.
