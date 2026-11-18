@@ -1,0 +1,311 @@
+[
+  {
+    "id": "himalayas",
+    "name": "Himalayas",
+    "provider": "himalayas",
+    "enabled": true,
+    "interval_hours": 24,
+    "max_pages": 10,
+    "url": "https://himalayas.app",
+    "docs": "https://himalayas.app/api",
+    "note": "API sin clave. Hasta 200 resultados recientes para Colombia por actualización; no es todo el catálogo. Conserva applicationLink, fuente, salarios y restricciones horarias. Actualización diaria."
+  },
+  {
+    "id": "jobicy",
+    "name": "Jobicy",
+    "provider": "jobicy",
+    "enabled": true,
+    "interval_hours": 6,
+    "max_pages": 5,
+    "url": "https://jobicy.com",
+    "docs": "https://github.com/Jobicy/remote-jobs-api",
+    "note": "API pública con paginación por cursor. Hasta 1.000 ofertas publicadas en los últimos siete días; salir del feed no significa que la vacante esté cerrada."
+  },
+  {
+    "id": "arbeitnow",
+    "name": "Arbeitnow",
+    "provider": "arbeitnow",
+    "enabled": true,
+    "interval_hours": 12,
+    "max_pages": 3,
+    "url": "https://www.arbeitnow.com",
+    "docs": "https://www.arbeitnow.com/blog/job-board-api",
+    "note": "API pública. Hasta tres páginas de empleos europeos; remoto no implica elegibilidad desde Colombia."
+  },
+  {
+    "id": "wwr",
+    "name": "We Work Remotely",
+    "provider": "wwr",
+    "enabled": true,
+    "interval_hours": 6,
+    "url": "https://weworkremotely.com",
+    "docs": "https://weworkremotely.com/remote-job-rss-feed",
+    "note": "RSS oficial de ofertas recientes con atribución y enlaces a WWR. Ventana del feed, no catálogo completo."
+  },
+  {
+    "id": "remoteok",
+    "name": "Remote OK",
+    "provider": "remoteok",
+    "enabled": true,
+    "interval_hours": 24,
+    "url": "https://remoteok.com",
+    "docs": "https://remoteok.com/api",
+    "note": "Feed JSON público, conserva enlace y atribución a Remote OK. Revisar disponibilidad de cada anuncio."
+  },
+  {
+    "id": "remotive",
+    "name": "Remotive",
+    "provider": "remotive",
+    "enabled": true,
+    "interval_hours": 6,
+    "url": "https://remotive.com",
+    "docs": "https://github.com/remotive-com/remote-jobs-api",
+    "note": "API pública. Atribución y enlace a Remotive; datos retrasados 24 horas. Máximo cuatro consultas diarias."
+  },
+  {
+    "id": "greenhouse-canonical",
+    "name": "Canonical · Greenhouse",
+    "provider": "greenhouse",
+    "board": "canonical",
+    "company": "Canonical",
+    "enabled": true,
+    "interval_hours": 6,
+    "url": "https://boards.greenhouse.io/canonical",
+    "docs": "https://docs.greenhouse.io/job-board",
+    "note": "Portal público por empresa. Añade más empresas en sources.json."
+  },
+  {
+    "id": "lever-caseware",
+    "name": "Caseware · Lever",
+    "provider": "lever",
+    "board": "caseware",
+    "company": "Caseware",
+    "enabled": true,
+    "interval_hours": 6,
+    "url": "https://jobs.lever.co/caseware",
+    "docs": "https://github.com/lever/postings-api",
+    "note": "Vacantes del portal de la empresa. Revisar restricciones geográficas."
+  },
+  {
+    "id": "ashby-ashby",
+    "name": "Ashby · Empleos",
+    "provider": "ashby",
+    "board": "ashby",
+    "company": "Ashby",
+    "enabled": true,
+    "interval_hours": 6,
+    "url": "https://jobs.ashbyhq.com/ashby",
+    "docs": "https://developers.ashbyhq.com/docs/public-job-posting-api",
+    "note": "Vacantes y remuneración cuando la empresa las publica."
+  },
+  {
+    "id": "linkedin",
+    "name": "LinkedIn Jobs",
+    "provider": "manual",
+    "enabled": false,
+    "url": "https://www.linkedin.com/jobs/",
+    "note": "Descubrimiento manual. Guarda el enlace original de cada oferta."
+  },
+  {
+    "id": "infojobs",
+    "name": "InfoJobs",
+    "provider": "pending",
+    "enabled": false,
+    "url": "https://www.infojobs.net/",
+    "note": "Pendiente de credenciales y validación de acceso a su API.",
+    "docs": "https://developer.infojobs.net/documentation/operation-list/index.xhtml"
+  },
+  {
+    "id": "reddit",
+    "name": "Reddit",
+    "provider": "pending",
+    "enabled": false,
+    "url": "https://www.reddit.com/r/forhire/",
+    "note": "Descubrimiento manual; integración pendiente de acceso autorizado."
+  },
+  {
+    "id": "workana",
+    "name": "Workana",
+    "provider": "manual",
+    "enabled": false,
+    "url": "https://www.workana.com/jobs",
+    "category": "freelance",
+    "note": "Explora proyectos y registra los que te interesen con su enlace original."
+  },
+  {
+    "id": "upwork",
+    "name": "Upwork",
+    "provider": "manual",
+    "enabled": false,
+    "url": "https://www.upwork.com/freelance-jobs/python/",
+    "category": "freelance",
+    "note": "Descubrimiento manual; integración automática pendiente de autorización."
+  },
+  {
+    "id": "contra",
+    "name": "Contra",
+    "provider": "manual",
+    "enabled": false,
+    "url": "https://contra.com/",
+    "category": "freelance",
+    "note": "Explora proyectos y clientes; seguimiento manual en CareerOS."
+  },
+  {
+    "id": "devpost",
+    "name": "Devpost",
+    "provider": "manual",
+    "enabled": false,
+    "url": "https://devpost.com/hackathons",
+    "category": "evento",
+    "note": "Directorio de hackatones. Registra cada evento con fechas y URL de inscripción."
+  },
+  {
+    "id": "mlh",
+    "name": "Major League Hacking",
+    "provider": "manual",
+    "enabled": false,
+    "url": "https://mlh.io/",
+    "category": "evento",
+    "note": "Calendario oficial de hackatones; registro manual de oportunidades."
+  },
+  {
+    "id": "meetup",
+    "name": "Meetup",
+    "provider": "manual",
+    "enabled": false,
+    "url": "https://www.meetup.com/",
+    "category": "evento",
+    "note": "Directorio manual. La API GraphQL requiere Meetup Pro y aprobación de OAuth; no está conectada.",
+    "docs": "https://www.meetup.com/graphql/"
+  },
+  {
+    "id": "luma",
+    "name": "Luma",
+    "provider": "manual",
+    "enabled": false,
+    "url": "https://lu.ma/",
+    "category": "evento",
+    "note": "Directorio manual. API de gestión por calendario con Luma Plus y clave; no ofrece un catálogo global con esa clave.",
+    "docs": "https://docs.luma.com/reference/getting-started-with-your-api"
+  },
+  {
+    "id": "getonbrd",
+    "name": "Get on Board",
+    "url": "https://www.getonbrd.com",
+    "docs": "https://www.getonbrd.com/api-doc",
+    "note": "API pública documentada para empleos de LATAM. La prueba desde este entorno devolvió HTTP 403; integración pendiente, sin intentar eludir el bloqueo.",
+    "enabled": false,
+    "provider": "pending"
+  },
+  {
+    "id": "adzuna",
+    "name": "Adzuna",
+    "url": "https://www.adzuna.com",
+    "docs": "https://developer.adzuna.com/",
+    "note": "API de búsqueda de empleo. Requiere app_id y app_key; validar mercados disponibles antes de asumir cobertura colombiana.",
+    "enabled": false,
+    "provider": "pending"
+  },
+  {
+    "id": "jooble",
+    "name": "Jooble",
+    "url": "https://co.jooble.org",
+    "docs": "https://jooble.org/api/about",
+    "note": "API de búsqueda por palabras y ubicación; requiere solicitar una clave. Prioridad alta para Colombia.",
+    "enabled": false,
+    "provider": "pending"
+  },
+  {
+    "id": "smartrecruiters",
+    "name": "SmartRecruiters",
+    "url": "https://www.smartrecruiters.com",
+    "docs": "https://developers.smartrecruiters.com/docs/posting-api",
+    "note": "API por empresa; validar credenciales y alcance de la API de publicaciones antes de activarla.",
+    "enabled": false,
+    "provider": "pending"
+  },
+  {
+    "id": "recruitee",
+    "name": "Recruitee",
+    "url": "https://recruitee.com",
+    "docs": "https://docs.recruitee.com/reference/authentication-1",
+    "note": "API por empresa. Documenta token Careers Site obligatorio desde febrero de 2027; no depender de acceso anónimo.",
+    "enabled": false,
+    "provider": "pending"
+  },
+  {
+    "id": "freelancer",
+    "name": "Freelancer",
+    "url": "https://www.freelancer.com",
+    "docs": "https://developers.freelancer.com/",
+    "note": "Portal oficial de desarrolladores localizado; pendiente de validar autenticación, alcance y condiciones para proyectos freelance.",
+    "enabled": false,
+    "provider": "pending",
+    "category": "freelance"
+  },
+  {
+    "id": "ticketmaster",
+    "name": "Ticketmaster Discovery",
+    "url": "https://www.ticketmaster.com",
+    "docs": "https://developer.ticketmaster.com/products-and-docs/apis/discovery-api/v2/",
+    "note": "API de búsqueda de eventos con clave. Cobertura de eventos técnicos y Colombia por validar.",
+    "enabled": false,
+    "provider": "pending",
+    "category": "evento"
+  },
+  {
+    "id": "eventbrite",
+    "name": "Eventbrite",
+    "url": "https://www.eventbrite.com",
+    "docs": "https://www.eventbrite.com/platform/api",
+    "note": "Portal oficial localizado; documentación devolvió HTTP 429. Pendiente de revisar acceso y alcance real de búsqueda.",
+    "enabled": false,
+    "provider": "pending",
+    "category": "evento"
+  },
+  {
+    "id": "themuse",
+    "name": "The Muse",
+    "url": "https://www.themuse.com",
+    "docs": "https://www.themuse.com/developers/api/v2",
+    "note": "La antigua documentación redirige a About. No se asume una API pública vigente; requiere nueva validación.",
+    "enabled": false,
+    "provider": "pending"
+  },
+  {
+    "id": "reed",
+    "name": "Reed",
+    "url": "https://www.reed.co.uk",
+    "docs": "https://www.reed.co.uk/developers/jobseeker",
+    "note": "API de búsqueda británica con clave y autenticación Basic. Revisar permiso para trabajar y ubicación.",
+    "enabled": false,
+    "provider": "pending"
+  },
+  {
+    "id": "findwork",
+    "name": "Findwork",
+    "url": "https://findwork.dev",
+    "docs": "https://findwork.dev/developers/",
+    "note": "Portal de desarrolladores requiere iniciar sesión; condiciones y acceso pendientes de verificar.",
+    "enabled": false,
+    "provider": "pending"
+  },
+  {
+    "id": "usajobs",
+    "name": "USAJOBS",
+    "url": "https://www.usajobs.gov",
+    "docs": "https://developer.usajobs.gov/tutorials/search-jobs",
+    "note": "API oficial con clave. Empleo federal de EE. UU.; revisar ciudadanía y elegibilidad antes de priorizarla.",
+    "enabled": false,
+    "provider": "pending"
+  },
+  {
+    "id": "serpapi",
+    "name": "SerpApi · Google Jobs",
+    "url": "https://serpapi.com",
+    "docs": "https://serpapi.com/google-jobs-api",
+    "note": "Proveedor externo con clave y cuotas. No es una API oficial de Google; validar costo y condiciones antes de conectarla.",
+    "enabled": false,
+    "provider": "pending"
+  }
+]
