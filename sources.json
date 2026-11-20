@@ -112,8 +112,9 @@
     "provider": "pending",
     "enabled": false,
     "url": "https://www.infojobs.net/",
-    "note": "Pendiente de credenciales y validación de acceso a su API.",
-    "docs": "https://developer.infojobs.net/documentation/operation-list/index.xhtml"
+    "note": "Faltan credenciales y validación del mercado colombiano; aún no hay un conector implementado.",
+    "docs": "https://developer.infojobs.net/documentation/operation-list/index.xhtml",
+    "integration_status": "needs_access"
   },
   {
     "id": "reddit",
@@ -121,7 +122,8 @@
     "provider": "pending",
     "enabled": false,
     "url": "https://www.reddit.com/r/forhire/",
-    "note": "Descubrimiento manual; integración pendiente de acceso autorizado."
+    "note": "Requiere acceso autorizado a la API y definir comunidades concretas; aún no hay conector implementado.",
+    "integration_status": "needs_access"
   },
   {
     "id": "workana",
@@ -153,20 +155,25 @@
   {
     "id": "devpost",
     "name": "Devpost",
-    "provider": "manual",
-    "enabled": false,
+    "provider": "devpost",
+    "enabled": true,
     "url": "https://devpost.com/hackathons",
     "category": "evento",
-    "note": "Directorio de hackatones. Registra cada evento con fechas y URL de inscripción."
+    "note": "Convocatorias abiertas: organizador, temáticas, período de participación, premios e inscripción. Hasta siete páginas del catálogo público. El catálogo no incluye siempre requisitos completos, costo o correo del organizador.",
+    "interval_hours": 12,
+    "max_pages": 7,
+    "docs": "https://help.devpost.com/article/78-how-to-contact-the-hackathon-manager"
   },
   {
     "id": "mlh",
     "name": "Major League Hacking",
-    "provider": "manual",
-    "enabled": false,
-    "url": "https://mlh.io/",
+    "provider": "mlh",
+    "enabled": true,
+    "url": "https://www.mlh.com/seasons/2027/events",
     "category": "evento",
-    "note": "Calendario oficial de hackatones; registro manual de oportunidades."
+    "note": "Calendario público de la temporada MLH 2027. Importa únicamente eventos presenciales en Bogotá u online explícitos; un calendario sin eventos compatibles produce cero resultados, sin inventar convocatorias. Conserva fechas y enlace oficial; costo y requisitos deben comprobarse.",
+    "integration_status": "ready",
+    "interval_hours": 12
   },
   {
     "id": "meetup",
@@ -190,122 +197,345 @@
   },
   {
     "id": "getonbrd",
-    "name": "Get on Board",
+    "name": "Get on Board · Colombia",
     "url": "https://www.getonbrd.com",
     "docs": "https://www.getonbrd.com/api-doc",
-    "note": "API pública documentada para empleos de LATAM. La prueba desde este entorno devolvió HTTP 403; integración pendiente, sin intentar eludir el bloqueo.",
-    "enabled": false,
-    "provider": "pending"
+    "note": "API pública sin clave, consultada por Colombia. Hasta 360 anuncios por carga, con empresa, ciudad, modalidad y descripción. Atribución y enlaces originales de Get on Board. Se ocultan del feed si pasan 24 horas sin renovar sus datos; pulsa Actualizar fuentes.",
+    "enabled": true,
+    "provider": "getonbrd",
+    "interval_hours": 12,
+    "max_pages": 3,
+    "market_scope": "colombia",
+    "integration_status": "ready"
   },
   {
     "id": "adzuna",
     "name": "Adzuna",
     "url": "https://www.adzuna.com",
     "docs": "https://developer.adzuna.com/",
-    "note": "API de búsqueda de empleo. Requiere app_id y app_key; validar mercados disponibles antes de asumir cobertura colombiana.",
+    "note": "Requiere app_id y app_key, confirmar cobertura de Colombia y desarrollar el conector.",
     "enabled": false,
-    "provider": "pending"
+    "provider": "pending",
+    "integration_status": "needs_access"
   },
   {
     "id": "jooble",
     "name": "Jooble",
     "url": "https://co.jooble.org",
-    "docs": "https://jooble.org/api/about",
-    "note": "API de búsqueda por palabras y ubicación; requiere solicitar una clave. Prioridad alta para Colombia.",
+    "docs": "https://help.jooble.org/en/support/solutions/articles/60001448238",
+    "note": "Conector implementado. Falta una clave de Jooble Colombia: solicítala en el enlace de configuración. Cuando JOOBLE_API_KEY esté configurada en el servidor se activa automáticamente al reiniciar. Busca desarrollo, Python y datos en Bogotá; hasta 12 consultas por carga. La clave de otro país no sirve para Colombia.",
     "enabled": false,
-    "provider": "pending"
+    "provider": "jooble",
+    "interval_hours": 12,
+    "max_pages": 2,
+    "queries": [
+      "desarrollador",
+      "python",
+      "datos"
+    ],
+    "market_scope": "colombia",
+    "integration_status": "needs_key",
+    "setup_url": "https://co.jooble.org/api/about"
   },
   {
     "id": "smartrecruiters",
-    "name": "SmartRecruiters",
-    "url": "https://www.smartrecruiters.com",
+    "name": "Talan · Colombia (SmartRecruiters)",
+    "url": "https://careers.smartrecruiters.com/Talan",
     "docs": "https://developers.smartrecruiters.com/docs/posting-api",
-    "note": "API por empresa; validar credenciales y alcance de la API de publicaciones antes de activarla.",
-    "enabled": false,
-    "provider": "pending"
+    "note": "Conexión al catálogo público de Talan, filtrado por Colombia. Consulta cada anuncio para importar la descripción completa. Solo importa publicaciones públicas y conserva el enlace original; no consulta procesos ni datos de candidatos.",
+    "enabled": true,
+    "provider": "smartrecruiters",
+    "board": "Talan",
+    "company": "Talan",
+    "category": "empleo",
+    "market_scope": "colombia",
+    "interval_hours": 12,
+    "max_pages": 2,
+    "integration_status": "ready"
   },
   {
     "id": "recruitee",
     "name": "Recruitee",
     "url": "https://recruitee.com",
     "docs": "https://docs.recruitee.com/reference/authentication-1",
-    "note": "API por empresa. Documenta token Careers Site obligatorio desde febrero de 2027; no depender de acceso anónimo.",
+    "note": "Requiere portales concretos de empresas y validar el token Careers Site; no hay conector implementado.",
     "enabled": false,
-    "provider": "pending"
+    "provider": "pending",
+    "integration_status": "needs_access"
   },
   {
     "id": "freelancer",
     "name": "Freelancer",
     "url": "https://www.freelancer.com",
-    "docs": "https://developers.freelancer.com/",
-    "note": "Portal oficial de desarrolladores localizado; pendiente de validar autenticación, alcance y condiciones para proyectos freelance.",
-    "enabled": false,
-    "provider": "pending",
-    "category": "freelance"
+    "docs": "https://github.com/freelancer/freelancer-sdk-python",
+    "note": "Proyectos públicos: descripción, presupuesto original, habilidades, ubicación del cliente y contacto en plataforma. Hasta 300 resultados antes de deduplicar por URL. El nombre y correo del cliente pueden no estar publicados.",
+    "enabled": true,
+    "provider": "freelancer",
+    "category": "freelance",
+    "interval_hours": 6,
+    "max_pages": 2,
+    "queries": [
+      "python",
+      "javascript",
+      "backend"
+    ]
   },
   {
     "id": "ticketmaster",
     "name": "Ticketmaster Discovery",
     "url": "https://www.ticketmaster.com",
     "docs": "https://developer.ticketmaster.com/products-and-docs/apis/discovery-api/v2/",
-    "note": "API de búsqueda de eventos con clave. Cobertura de eventos técnicos y Colombia por validar.",
+    "note": "Requiere clave y confirmar cobertura de eventos tecnológicos en Bogotá; no hay conector implementado.",
     "enabled": false,
     "provider": "pending",
-    "category": "evento"
+    "category": "evento",
+    "integration_status": "needs_access"
   },
   {
     "id": "eventbrite",
     "name": "Eventbrite",
     "url": "https://www.eventbrite.com",
     "docs": "https://www.eventbrite.com/platform/api",
-    "note": "Portal oficial localizado; documentación devolvió HTTP 429. Pendiente de revisar acceso y alcance real de búsqueda.",
+    "note": "Falta confirmar un acceso de búsqueda autorizado que cubra eventos de Bogotá; no hay conector implementado.",
     "enabled": false,
     "provider": "pending",
-    "category": "evento"
+    "category": "evento",
+    "integration_status": "access_review"
   },
   {
     "id": "themuse",
     "name": "The Muse",
     "url": "https://www.themuse.com",
     "docs": "https://www.themuse.com/developers/api/v2",
-    "note": "La antigua documentación redirige a About. No se asume una API pública vigente; requiere nueva validación.",
+    "note": "Falta validar una API de búsqueda vigente y su utilidad para Colombia; no hay conector implementado.",
     "enabled": false,
-    "provider": "pending"
+    "provider": "pending",
+    "integration_status": "access_review"
   },
   {
     "id": "reed",
     "name": "Reed",
     "url": "https://www.reed.co.uk",
     "docs": "https://www.reed.co.uk/developers/jobseeker",
-    "note": "API de búsqueda británica con clave y autenticación Basic. Revisar permiso para trabajar y ubicación.",
+    "note": "Requiere clave. Mercado británico, de menor prioridad para este radar colombiano; no hay conector implementado.",
     "enabled": false,
-    "provider": "pending"
+    "provider": "pending",
+    "integration_status": "needs_access"
   },
   {
     "id": "findwork",
     "name": "Findwork",
     "url": "https://findwork.dev",
     "docs": "https://findwork.dev/developers/",
-    "note": "Portal de desarrolladores requiere iniciar sesión; condiciones y acceso pendientes de verificar.",
+    "note": "Requiere acceso de desarrollador y validación de condiciones y cobertura; no hay conector implementado.",
     "enabled": false,
-    "provider": "pending"
+    "provider": "pending",
+    "integration_status": "needs_access"
   },
   {
     "id": "usajobs",
     "name": "USAJOBS",
     "url": "https://www.usajobs.gov",
     "docs": "https://developer.usajobs.gov/tutorials/search-jobs",
-    "note": "API oficial con clave. Empleo federal de EE. UU.; revisar ciudadanía y elegibilidad antes de priorizarla.",
+    "note": "Requiere clave. Empleo federal de Estados Unidos, de menor prioridad para este radar; no hay conector implementado.",
     "enabled": false,
-    "provider": "pending"
+    "provider": "pending",
+    "integration_status": "needs_access"
   },
   {
     "id": "serpapi",
-    "name": "SerpApi · Google Jobs",
+    "name": "SerpApi · Google Jobs Colombia",
     "url": "https://serpapi.com",
     "docs": "https://serpapi.com/google-jobs-api",
-    "note": "Proveedor externo con clave y cuotas. No es una API oficial de Google; validar costo y condiciones antes de conectarla.",
+    "note": "Conector de Google Jobs a través de SerpApi. Cinco búsquedas por actualización, una página de hasta diez resultados por búsqueda, con intervalo mínimo de 24 horas. Comprueba la cuota antes de consultar y conserva los enlaces de los portales originales. Solo importa ubicaciones explícitas en Colombia o Bogotá; el origen de la búsqueda no demuestra elegibilidad remota. No es una API oficial de Google ni una conexión directa a LinkedIn.",
     "enabled": false,
-    "provider": "pending"
+    "provider": "serpapi",
+    "integration_status": "needs_key",
+    "category": "empleo",
+    "market_scope": "colombia",
+    "interval_hours": 24,
+    "max_pages": 1,
+    "queries": [
+      "desarrollador Python Bogotá",
+      "desarrollador backend Bogotá",
+      "desarrollador React Bogotá",
+      "analista de datos Bogotá",
+      "desarrollador junior remoto Colombia"
+    ]
+  },
+  {
+    "id": "aws-bogota",
+    "name": "AWS User Group Bogotá",
+    "url": "https://www.meetup.com/aws-colombia-bogota/",
+    "provider": "opportunity_web",
+    "category": "evento",
+    "enabled": true,
+    "interval_hours": 12,
+    "max_pages": 8,
+    "link_pattern": "/events/\\d+",
+    "announcements": false,
+    "note": "Lee páginas públicas y eventos estructurados. Presenciales solo Bogotá; online con requisitos por confirmar. Los anuncios de formación se separan para verificar vigencia, modalidad y si incluyen examen. Si la página bloquea el acceso se conserva la carga anterior."
+  },
+  {
+    "id": "programacion-bogota",
+    "name": "Meetups de programación Bogotá",
+    "url": "https://www.meetup.com/find/co--bogota/computer-programming/",
+    "provider": "opportunity_web",
+    "category": "evento",
+    "enabled": true,
+    "interval_hours": 12,
+    "max_pages": 8,
+    "link_pattern": "/events/\\d+",
+    "announcements": false,
+    "note": "Lee páginas públicas y eventos estructurados. Presenciales solo Bogotá; online con requisitos por confirmar. Los anuncios de formación se separan para verificar vigencia, modalidad y si incluyen examen. Si la página bloquea el acceso se conserva la carga anterior."
+  },
+  {
+    "id": "aws-security-colombia",
+    "name": "AWS Security Colombia",
+    "url": "https://www.meetup.com/aws-user-group-security-colombia/",
+    "provider": "opportunity_web",
+    "category": "evento",
+    "enabled": true,
+    "interval_hours": 12,
+    "max_pages": 8,
+    "link_pattern": "/events/\\d+",
+    "announcements": false,
+    "note": "Lee páginas públicas y eventos estructurados. Presenciales solo Bogotá; online con requisitos por confirmar. Los anuncios de formación se separan para verificar vigencia, modalidad y si incluyen examen. Si la página bloquea el acceso se conserva la carga anterior."
+  },
+  {
+    "id": "bogota-formacion",
+    "name": "Alcaldía de Bogotá · formación",
+    "url": "https://bogota.gov.co/tag/cursos-gratuitos",
+    "provider": "opportunity_web",
+    "category": "evento",
+    "enabled": true,
+    "interval_hours": 12,
+    "max_pages": 10,
+    "link_pattern": "/mi-ciudad/.*(?:curso|tecnolog|formacion|inteligencia|oracle|aws)",
+    "announcements": true,
+    "note": "Lee páginas públicas y eventos estructurados. Presenciales solo Bogotá; online con requisitos por confirmar. Los anuncios de formación se separan para verificar vigencia, modalidad y si incluyen examen. Si la página bloquea el acceso se conserva la carga anterior.",
+    "listing_only": true
+  },
+  {
+    "id": "oracle-formacion",
+    "name": "Oracle · formación y certificaciones",
+    "url": "https://www.oracle.com/latam/education/training/",
+    "provider": "opportunity_web",
+    "category": "evento",
+    "enabled": true,
+    "interval_hours": 12,
+    "max_pages": 3,
+    "link_pattern": "/latam/education/certification/(?:race-to-certification/)?$",
+    "announcements": true,
+    "note": "Lee páginas públicas y eventos estructurados. Presenciales solo Bogotá; online con requisitos por confirmar. Los anuncios de formación se separan para verificar vigencia, modalidad y si incluyen examen. Si la página bloquea el acceso se conserva la carga anterior."
+  },
+  {
+    "id": "aws-certificaciones",
+    "name": "AWS · promociones de certificación",
+    "url": "https://aws.amazon.com/certification/benefits/",
+    "provider": "opportunity_web",
+    "category": "evento",
+    "enabled": true,
+    "interval_hours": 12,
+    "max_pages": 8,
+    "link_pattern": null,
+    "announcements": true,
+    "note": "Lee páginas públicas y eventos estructurados. Presenciales solo Bogotá; online con requisitos por confirmar. Los anuncios de formación se separan para verificar vigencia, modalidad y si incluyen examen. Si la página bloquea el acceso se conserva la carga anterior."
+  },
+  {
+    "id": "bogota-experta-tech",
+    "name": "Bogotá · formación con AWS",
+    "provider": "opportunity_web",
+    "enabled": true,
+    "category": "evento",
+    "url": "https://bogota.gov.co/mi-ciudad/desarrollo-economico/curso-gratuito-en-bogota-sobre-inteligencia-artifical-con-amazon",
+    "announcements": true,
+    "interval_hours": 24,
+    "note": "Anuncio histórico del Distrito, cierre publicado: 7 de agosto de 2026. Se muestra vencido; no implica nueva inscripción abierta. Se sigue consultando la página oficial.",
+    "known_deadline": "2026-08-07"
+  },
+  {
+    "id": "greenhouse-sezzle",
+    "name": "Sezzle · Colombia y Bogotá",
+    "provider": "greenhouse",
+    "board": "sezzle",
+    "company": "Sezzle",
+    "enabled": true,
+    "category": "empleo",
+    "interval_hours": 6,
+    "market_scope": "colombia",
+    "url": "https://job-boards.greenhouse.io/sezzle",
+    "docs": "https://docs.greenhouse.io/job-board",
+    "note": "Conexión directa al portal público de Sezzle. Importa únicamente vacantes cuya ubicación publicada menciona Colombia o Bogotá; conserva otras ciudades colombianas cuando indican el país. No implica elegibilidad ni confirma modalidad. Consulta cada seis horas."
+  },
+  {
+    "id": "greenhouse-antenna",
+    "name": "Antenna · Colombia y Bogotá",
+    "provider": "greenhouse",
+    "board": "Antenna",
+    "company": "Antenna",
+    "enabled": true,
+    "category": "empleo",
+    "interval_hours": 6,
+    "market_scope": "colombia",
+    "url": "https://job-boards.greenhouse.io/Antenna",
+    "docs": "https://docs.greenhouse.io/job-board",
+    "note": "Conexión directa al portal público de Antenna. Importa únicamente vacantes cuya ubicación publicada menciona Colombia o Bogotá; conserva otras ciudades colombianas cuando indican el país. No implica elegibilidad ni confirma modalidad. Consulta cada seis horas."
+  },
+  {
+    "id": "greenhouse-cobre",
+    "name": "Cobre · Colombia y Bogotá",
+    "provider": "greenhouse",
+    "board": "cobre",
+    "company": "Cobre",
+    "enabled": true,
+    "category": "empleo",
+    "interval_hours": 6,
+    "market_scope": "colombia",
+    "url": "https://job-boards.greenhouse.io/cobre",
+    "docs": "https://docs.greenhouse.io/job-board",
+    "note": "Conexión directa al portal público de Cobre. Importa únicamente vacantes cuya ubicación publicada menciona Colombia o Bogotá; conserva otras ciudades colombianas cuando indican el país. No implica elegibilidad ni confirma modalidad. Consulta cada seis horas."
+  },
+  {
+    "id": "lever-tryjeeves",
+    "name": "Jeeves · Colombia y Bogotá",
+    "provider": "lever",
+    "board": "tryjeeves",
+    "company": "Jeeves",
+    "enabled": true,
+    "category": "empleo",
+    "interval_hours": 6,
+    "market_scope": "colombia",
+    "url": "https://jobs.lever.co/tryjeeves",
+    "docs": "https://github.com/lever/postings-api",
+    "note": "Conexión directa al portal público de Jeeves. Importa únicamente vacantes cuya ubicación publicada menciona Colombia o Bogotá; conserva otras ciudades colombianas cuando indican el país. No implica elegibilidad ni confirma modalidad. Consulta cada seis horas."
+  },
+  {
+    "id": "lever-coupa",
+    "name": "Coupa · Colombia y Bogotá",
+    "provider": "lever",
+    "board": "coupa",
+    "company": "Coupa",
+    "enabled": true,
+    "category": "empleo",
+    "interval_hours": 6,
+    "market_scope": "colombia",
+    "url": "https://jobs.lever.co/coupa",
+    "docs": "https://github.com/lever/postings-api",
+    "note": "Conexión directa al portal público de Coupa. Importa únicamente vacantes cuya ubicación publicada menciona Colombia o Bogotá; conserva otras ciudades colombianas cuando indican el país. No implica elegibilidad ni confirma modalidad. Consulta cada seis horas."
+  },
+  {
+    "id": "lever-bluelightconsulting",
+    "name": "Bluelight Consulting · Colombia y Bogotá",
+    "provider": "lever",
+    "board": "bluelightconsulting",
+    "company": "Bluelight Consulting",
+    "enabled": true,
+    "category": "empleo",
+    "interval_hours": 6,
+    "market_scope": "colombia",
+    "url": "https://jobs.lever.co/bluelightconsulting",
+    "docs": "https://github.com/lever/postings-api",
+    "note": "Conexión directa al portal público de Bluelight Consulting. Importa únicamente vacantes cuya ubicación publicada menciona Colombia o Bogotá; conserva otras ciudades colombianas cuando indican el país. No implica elegibilidad ni confirma modalidad. Consulta cada seis horas."
   }
 ]
