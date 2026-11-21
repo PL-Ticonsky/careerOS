@@ -8,7 +8,7 @@ const views = {
   evento: ['Eventos y formación', 'Conecta con lo que viene.', 'Meetups, programación, formación y certificaciones para ampliar tus oportunidades.'],
   sources: ['Fuentes de datos', 'Un radar más amplio.', 'Consulta la cobertura y el resultado real de cada conexión.']
 };
-const filterIds = ['priority', 'query', 'location', 'mode', 'level', 'source', 'salary', 'inactive', 'sort', 'favorite', 'due', 'stage', 'event_type', 'free', 'discovery-only', 'show_saved', 'ungrouped'];
+const filterIds = ['startups', 'callcenter', 'priority', 'query', 'location', 'mode', 'level', 'source', 'salary', 'inactive', 'sort', 'favorite', 'due', 'stage', 'event_type', 'free', 'discovery-only', 'show_saved', 'ungrouped'];
 let meta = {sources: [], states: [], stats: {}, history: []};
 let groupedDuplicates = 0;
 let items = [], total = 0, view = 'empleo', state = {}, requestNumber = 0, searchTimer, pollTimer;
@@ -75,7 +75,7 @@ function renderShell() {
   $('#top-search').classList.toggle('hidden', ['sources', 'analytics'].includes(view));
   $('#opportunities').classList.toggle('hidden', ['sources', 'analytics'].includes(view));
   $('#analytics').classList.toggle('hidden', view !== 'analytics');
-  $('#stats').classList.toggle('hidden', view === 'analytics');
+  $('#stats').classList.toggle('hidden', view === 'analytics' || (view === 'empleo' && $('#callcenter').checked));
   $('#source-list').classList.toggle('hidden', view !== 'sources');
   $('#places-panel').classList.toggle('hidden', view !== 'freelance');
   $('#priority-label').classList.toggle('hidden', view === 'evento');
@@ -83,8 +83,16 @@ function renderShell() {
   $('#event-filters').classList.toggle('hidden', view !== 'evento');
   $('#feed-controls').classList.toggle('hidden', view === 'tracking');
   $('#tracking-filters').classList.toggle('hidden', view !== 'tracking');
-  const stats = ['empleo', 'freelance', 'evento'].includes(view) ? {...meta.stats, ...(meta.stats.by_kind?.[view] || {active: 0, compatible: 0, tracking: 0})} : meta.stats;
-  const relevantSources = meta.sources.filter(source => !['empleo', 'freelance', 'evento'].includes(view) || (source.category || 'empleo') === view);
+  const callcenterFilter = view === 'empleo' && $('#callcenter').checked;
+  $('#callcenter-toggle').classList.toggle('hidden', view !== 'empleo');
+  $('#callcenter-toggle').setAttribute('aria-pressed', String(callcenterFilter));
+  if (!$('#sync').disabled) $('#sync').textContent = callcenterFilter ? '↻ Actualizar call center' : '↻ Actualizar fuentes';
+  const startupFilter = view === 'empleo' && $('#startups').checked;
+  $('#startups-toggle').classList.toggle('hidden', view !== 'empleo');
+  $('#startups-toggle').setAttribute('aria-pressed', String(startupFilter));
+  const statsKind = startupFilter ? 'startups' : view;
+  const stats = ['empleo', 'freelance', 'evento'].includes(view) ? {...meta.stats, ...(meta.stats.by_kind?.[statsKind] || {active: 0, compatible: 0, tracking: 0})} : meta.stats;
+  const relevantSources = meta.sources.filter(source => (!['empleo', 'freelance', 'evento'].includes(view) || (source.category || 'empleo') === view) && (!startupFilter || source.tech_radar) && (!source.on_demand || callcenterFilter || view === 'sources'));
   const connected = relevantSources.filter(source => source.enabled && source.run?.success && !source.run?.error).length;
   const selectedSource = $('#source').value;
   $('#source').innerHTML = '<option value="">Todas las fuentes</option><option value="manual">Registro manual</option>' + relevantSources.filter(source => source.enabled).map(source => `<option value="${esc(source.id)}">${esc(source.name)}</option>`).join('');
@@ -99,7 +107,7 @@ function renderShell() {
     [connected, 'Fuentes sincronizadas', `${relevantSources.filter(s => s.enabled).length} automáticas · ${relevantSources.length} en catálogo`]
   ].map(([number, title, caption]) => `<div class="stat"><label>${title}</label><strong>${number.toLocaleString('es-CO')}</strong><small>${caption}</small></div>`).join('');
   $('#tracking-summary').innerHTML = view === 'tracking' ? '<p class="section-note">' + ['Postulada', 'Entrevista', 'Oferta', 'Descartada'].map(stage => `${esc(stage)}: ${meta.stats.stages?.[stage] || 0}`).join(' · ') + '</p>' : '';
-  $('#discovery').innerHTML = view === 'freelance' ? '<p class="section-note">Proyectos que buscan profesionales: descripción, presupuesto, requisitos publicados y contacto del cliente. Cuando la plataforma oculta el contacto, lo indicamos en el detalle.</p>' : view === 'evento' ? '<p class="section-note">Tu radar personal: presenciales en Bogotá y eventos online. Confirma los requisitos de acceso. Activa «Anuncios por verificar» para revisar promociones, formación y certificaciones oficiales cuya vigencia o modalidad falta confirmar; no son inscripciones abiertas confirmadas.</p>' : '';
+  $('#discovery').innerHTML = callcenterFilter ? '<p class="section-note">Presencial en Bogotá o remoto compatible con Colombia.</p>' : startupFilter ? '<p class="section-note">Startups y empresas tecnológicas seleccionadas. Puedes combinar este filtro con ubicación, nivel y modalidad.</p>' : view === 'freelance' ? '<p class="section-note">Proyectos que buscan profesionales: descripción, presupuesto, requisitos publicados y contacto del cliente. Cuando la plataforma oculta el contacto, lo indicamos en el detalle.</p>' : view === 'evento' ? '<p class="section-note">Tu radar personal: presenciales en Bogotá y eventos online. Confirma los requisitos de acceso. Activa «Anuncios por verificar» para revisar promociones, formación y certificaciones oficiales cuya vigencia o modalidad falta confirmar; no son inscripciones abiertas confirmadas.</p>' : '';
   if (view === 'sources') renderSources();
 }
 function renderSourceCard(source) {
@@ -200,11 +208,13 @@ async function search(append = false) {
   clearTimeout(searchTimer);
   const number = ++requestNumber;
   storeFilters();
+  renderShell();
   if (view === 'sources') { renderShell(); return; }
   if (view === 'analytics') { await loadAnalytics(append); return; }
   const params = new URLSearchParams({view, limit: '24', offset: String(append ? items.length : 0)});
   for (const id of filterIds) {
     const field = $('#' + id);
+    if (['startups', 'callcenter'].includes(id) && view !== 'empleo') continue;
     if ((view === 'evento' && id === 'priority') || (view === 'tracking' && ['show_saved', 'ungrouped'].includes(id))) continue;
     if (field.type === 'checkbox') { if (field.checked) params.set(id === 'discovery-only' ? 'discovery' : id, '1'); }
     else if (field.value) params.set(id === 'stage' ? 'status' : id === 'location' ? 'market' : id, field.value);
@@ -299,6 +309,15 @@ document.addEventListener('click', async event => {
     if (button.dataset.mode) { $('#mode').value = button.dataset.mode; await search(); }
   } catch (error) { notice(error.message); } finally { if (button.dataset.save) button.disabled = false; }
 });
+for (const [id, other] of [['startups', 'callcenter'], ['callcenter', 'startups']]) {
+  $('#' + id + '-toggle').onclick = () => {
+    const field = $('#' + id);
+    field.checked = !field.checked;
+    if (field.checked) $('#' + other).checked = false;
+    $('#source').value = '';
+    search();
+  };
+}
 $('#reset').onclick = () => { resetFilters(); search(); };
 filterIds.forEach(id => $('#' + id).addEventListener('input', () => {
   // Invalidate a pending request immediately, including during the debounce.
@@ -320,7 +339,7 @@ async function pollSync(initial = false) {
     const progress = await api('sync/progress');
     syncConnectionLost = false; syncReconnects = 0;
     $('#sync').disabled = progress.running;
-    $('#sync').textContent = progress.running ? `↻ ${progress.completed}/${progress.total} fuentes` : '↻ Actualizar fuentes';
+    $('#sync').textContent = progress.running ? `↻ ${progress.completed}/${progress.total} fuentes` : view === 'empleo' && $('#callcenter').checked ? '↻ Actualizar call center' : '↻ Actualizar fuentes';
     $('#sync-progress').classList.toggle('hidden', !progress.running);
     $('#sync-progress').textContent = progress.running ? `Actualizando: ${progress.current ? sourceName(progress.current) : 'preparando fuentes'} · ${progress.completed} de ${progress.total} terminadas. Puedes seguir explorando.` : '';
     if (progress.running) pollTimer = setTimeout(() => pollSync(), 1000);
@@ -343,7 +362,7 @@ async function pollSync(initial = false) {
 $('#sync').onclick = async () => {
   $('#sync').disabled = true;
   try {
-    if (!syncConnectionLost) await api('sync/start', {});
+    if (!syncConnectionLost) await api('sync/start', {callcenter: view === 'empleo' && $('#callcenter').checked});
     await pollSync();
   } catch (error) {
     $('#sync').disabled = false;

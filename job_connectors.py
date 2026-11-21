@@ -66,7 +66,8 @@ def smartrecruiters_record(source, row, normalize, valid_url):
         return None
     loc = row.get('location') or {}
     country = 'Colombia' if str(loc.get('country', '')).lower() == 'co' else str(loc.get('country', ''))
-    location = loc.get('fullLocation') or ', '.join(x for x in (loc.get('city', ''), country) if x)
+    full_location = loc.get('fullLocation') or ''
+    location = full_location if re.search(r'\w', full_location) else ', '.join(x for x in (loc.get('city', ''), country) if x)
     # Country code is authoritative even when fullLocation omits the country name.
     if country == 'Colombia' and 'colombia' not in location.lower():
         location += ', Colombia'
@@ -77,7 +78,7 @@ def smartrecruiters_record(source, row, normalize, valid_url):
     item = normalize(source['id'], row['name'], row['company']['name'], location,
         public_url(row['postingUrl'], valid_url, 'smartrecruiters.com'), description,
         published=posted(row.get('releasedDate')), mode=mode)
-    item.update(employment_type=(row.get('typeOfEmployment') or {}).get('label', ''),
+    item.update(apply_url=item['url'], company_url=source.get('company_url', source.get('url', '')), employment_type=(row.get('typeOfEmployment') or {}).get('label', ''),
                 description_scope='full' if description else 'summary')
     return item
 
@@ -155,23 +156,37 @@ def collect(source, fetch, normalize, valid_url, batch_class, local_market, slee
         if not re.fullmatch(r'[A-Za-z0-9_-]+', board):
             raise ValueError('Identificador de empresa inválido')
         base = f'https://api.smartrecruiters.com/v1/companies/{board}/postings'
+        imported = set()
         for page in range(pages):
             offset = page * 100
-            data = fetch(base + '?' + urlencode({'country': 'co', 'limit': 100, 'offset': offset}))
+            query = {'limit': 100, 'offset': offset}
+            if source.get('country_filter', True):
+                query['country'] = 'co'
+            data = fetch(base + '?' + urlencode(query))
             rows, total = data['content'], data['totalFound']
             if not isinstance(rows, list) or type(total) is not int or total < 0:
                 raise ValueError('Respuesta de SmartRecruiters inválida')
             for row in rows:
                 # Fetch only public listings; construct a fixed-host detail URL.
                 if row.get('visibility') != 'PUBLIC': continue
+                if not source.get('country_filter', True) and (row.get('location') or {}).get('country', '').lower() != 'co': continue
                 identifier = str(row['id'])
                 if not re.fullmatch(r'[A-Za-z0-9_-]+', identifier):
                     batch.rejected.append({'error': 'ID inválido'}); continue
                 detail = fetch(base + '/' + identifier)
                 consume([detail], lambda row: smartrecruiters_record(source, row, normalize, valid_url))
+                imported.add(identifier)
                 sleep(0.1)
             if not rows or offset + len(rows) >= total: break
             if page + 1 < pages: sleep(0.3)
+        for identifier in source.get('seed_postings', []):
+            if not re.fullmatch(r'[A-Za-z0-9_-]+', str(identifier)):
+                raise ValueError('Identificador de publicación inválido')
+            if str(identifier) not in imported:
+                detail = fetch(base + '/' + str(identifier))
+                consume([detail], lambda row: smartrecruiters_record(source, row, normalize, valid_url))
+        if source.get('partial_catalog'):
+            batch.partial = True
     elif provider == 'jooble':
         queries = source.get('queries', ['desarrollador', 'python', 'datos'])
         if not isinstance(queries, list) or not 1 <= len(queries) <= 5 or not all(isinstance(q, str) and 1 <= len(q) <= 100 for q in queries):

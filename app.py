@@ -19,11 +19,13 @@ from urllib.parse import urlparse, urlencode, parse_qs
 from urllib.request import Request, urlopen
 from career_rules import eligibility, matches
 import workspace
+import call_center
 import application_analytics
 import salary_reference
 import opportunity_sources
 import discovery
 import job_connectors
+import job_portals
 import event_catalogues
 import places_config
 import serpapi_connector
@@ -150,15 +152,17 @@ def parse_record(provider, source, j):
     if provider == 'greenhouse':
         return normalize(name,j['title'],source['company'],j.get('location',{}).get('name',''),j['absolute_url'],j.get('content',''),published=j.get('first_published',''))
     if provider == 'lever':
-        return normalize(name,j['text'],source['company'],j.get('categories',{}).get('location',''),j['hostedUrl'],j.get('descriptionPlain','')+' '+ ' '.join(plain(x.get('content','')) for x in j.get('lists',[])),json.dumps(j['salaryRange']) if j.get('salaryRange') else '',datetime.fromtimestamp(j['createdAt']/1000,timezone.utc).isoformat() if j.get('createdAt') else '', {'remote':'Remoto','hybrid':'Híbrido','on-site':'Presencial'}.get(j.get('workplaceType'),''))
+        return normalize(name,j['text'],source['company'],' · '.join(dict.fromkeys([j.get('categories',{}).get('location','')] + (j.get('categories',{}).get('allLocations') or []))),j['hostedUrl'],j.get('descriptionPlain','')+' '+ ' '.join(plain(x.get('content','')) for x in j.get('lists',[])),json.dumps(j['salaryRange']) if j.get('salaryRange') else '',datetime.fromtimestamp(j['createdAt']/1000,timezone.utc).isoformat() if j.get('createdAt') else '', {'remote':'Remoto','hybrid':'Híbrido','on-site':'Presencial'}.get(j.get('workplaceType'),''))
     if provider == 'ashby':
         if not j.get('isListed',True): return None
-        return normalize(name,j['title'],source['company'],j.get('location',''),j['jobUrl'],j.get('descriptionPlain',''),(j.get('compensation') or {}).get('compensationTierSummary',''),j.get('publishedAt',''),'Remoto' if j.get('isRemote') else {'Hybrid':'Híbrido','OnSite':'Presencial'}.get(j.get('workplaceType'),''))
+        return normalize(name,j['title'],source['company'],' · '.join(dict.fromkeys([j.get('location','')] + [x.get('location','') for x in j.get('secondaryLocations',[]) if isinstance(x,dict)])),j['jobUrl'],j.get('descriptionPlain',''),(j.get('compensation') or {}).get('compensationTierSummary',''),j.get('publishedAt',''),'Remoto' if j.get('isRemote') else {'Hybrid':'Híbrido','OnSite':'Presencial'}.get(j.get('workplaceType'),''))
     raise ValueError('Proveedor no implementado')
 
 
 def collect(source):
     provider, board = source['provider'], source.get('board', '')
+    if provider in ('teamtailor_web', 'recruitee_public', 'workable_public', 'yc_public', 'kushki_public'):
+        return job_portals.collect(source, fetch, normalize, valid_url, Batch, workspace.local_market, time.sleep)
     if provider == 'serpapi':
         return serpapi_connector.collect(source, serpapi_connector.key(DB), normalize, valid_url, Batch, workspace.local_market, time.sleep)
     if provider == 'mlh':
@@ -177,7 +181,10 @@ def collect(source):
         for index, row in enumerate(rows):
             try:
                 item = parse_record(provider, source, row)
-                if item is not None and (not source.get('market_scope') or workspace.local_market(item) >= 2) and item['id'] not in seen:
+                if item is not None and valid_url(source.get('company_url', '')):
+                    item['company_url'] = source['company_url']
+                    item.setdefault('apply_url', item['url'])
+                if item is not None and (not source.get('market_scope') or workspace.local_market(item) >= (1 if source.get('include_compatible_remote') else 2)) and item['id'] not in seen:
                     batch.append(item)
                     seen.add(item['id'])
             except (ValueError, KeyError, TypeError, AttributeError, OverflowError, OSError) as exc:
@@ -227,7 +234,7 @@ def collect(source):
 def store(items, source, deactivate=True):
     workspace.store(connect, items, source, deactivate)
 
-def sync(locked=False):
+def sync(locked=False, callcenter=False):
     if not locked and not LOCK.acquire(blocking=False): return {'busy':True}
     results=[]
     operation = None
@@ -237,7 +244,10 @@ def sync(locked=False):
             with PROGRESS_LOCK:
                 SYNC_PROGRESS['error'] = 'Otra instancia está actualizando o restaurando esta base de datos.'
             return {'busy':True}
-        enabled = [s for s in sources() if s.get('enabled')]
+        enabled = [s for s in sources() if s.get('enabled') and (
+            s['id'] == call_center.SOURCE if callcenter else not s.get('on_demand'))]
+        if callcenter and not enabled:
+            return {'results': [], 'error': 'Configura SerpApi para buscar vacantes de call center.'}
         with PROGRESS_LOCK:
             SYNC_PROGRESS.update(running=True, current='', completed=0, total=len(enabled), results=[], error=None)
         for index, s in enumerate(enabled):
@@ -250,10 +260,11 @@ def sync(locked=False):
             try:
                 items=collect(s)
                 rejected=len(getattr(items,'rejected',[]))
-                store(items,s['id'],deactivate=not rejected)
+                partial=bool(rejected or getattr(items,'partial',False))
+                store(items,s['id'],deactivate=not partial)
                 with connect() as c: c.execute('INSERT OR REPLACE INTO runs VALUES (?,?,?,?,?)',(s['id'],time.time(),now(),len(items),None))
-                record_run(s['id'],started,'partial' if rejected else 'success',len(items),rejected)
-                results.append({'source':s['id'],'count':len(items),'rejected':rejected})
+                record_run(s['id'],started,'partial' if partial else 'success',len(items),rejected)
+                results.append({'source':s['id'],'count':len(items),'rejected':rejected,'partial':partial})
             except Exception as e:
                 with connect() as c: c.execute('INSERT OR REPLACE INTO runs VALUES (?,?,?,?,?)',(s['id'],time.time(),last['success'] if last else None,last['count'] if last else 0,str(e)))
                 record_run(s['id'],started,'error',error=str(e))
@@ -270,14 +281,19 @@ def sync(locked=False):
         LOCK.release()
 
 
-def start_sync():
+def start_sync(callcenter=False):
+    if callcenter and not serpapi_connector.key(DB):
+        raise ValueError('Configura SerpApi para buscar vacantes de call center.')
     if not LOCK.acquire(blocking=False):
         return {'busy': True}
     with PROGRESS_LOCK:
         SYNC_PROGRESS.update(running=True, current='', completed=0, total=0, results=[], error=None)
     def work():
         try:
-            sync(locked=True)
+            if callcenter:
+                sync(locked=True, callcenter=True)
+            else:
+                sync(locked=True)
         except Exception:
             pass  # Reported through /api/sync/progress; keep the server available.
     try:
@@ -404,7 +420,7 @@ class Handler(SimpleHTTPRequestHandler):
             data=json.loads(self.rfile.read(size))
             if not isinstance(data,dict): raise ValueError('Se requiere un objeto JSON')
             if self.path == '/api/sync': return self.reply(sync())
-            if self.path == '/api/sync/start': return self.reply(start_sync(),202)
+            if self.path == '/api/sync/start': return self.reply(start_sync(callcenter=True) if data.get('callcenter') is True else start_sync(),202)
             if self.path == '/api/places/save':
                 place_id, label = data.get('place_id'), data.get('label')
                 if not isinstance(place_id, str) or not re.fullmatch(r'[A-Za-z0-9_-]{5,300}', place_id):

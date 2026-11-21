@@ -150,3 +150,7 @@ La fuente serpapi se habilita al configurar SERPAPI_API_KEY o el archivo privado
 ## Salud para el lanzador local
 
 `GET /api/health` devuelve `{"app":"careeros","version":1}` sin datos personales ni claves. El lanzador lo usa para esperar el arranque y distinguir CareerOS de otra aplicación que ocupe el puerto 8765. Aplica las mismas comprobaciones de Host local que el resto de la API.
+
+### Filtro de startups
+
+`GET /api/opportunities?view=empleo&startups=1` limita la consulta al catálogo de empresas de `tech_radar.py`. Se combina con ubicación, nivel, modalidad, fuente, seguimiento y paginación. Se ignora en las otras vistas. `tech_company=<id>` es opcional cuando está activo este filtro. La antigua vista separada `startups` ya no es válida. `/api/meta` incluye estadísticas `stats.by_kind.startups` y fuentes con `tech_radar: true`.

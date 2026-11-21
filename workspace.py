@@ -1,5 +1,7 @@
 """SQLite evolution, paged search and personal workflow. No network access."""
 from discovery import eligible_event
+import tech_radar
+import call_center
 from functools import lru_cache
 from opportunity_quality import assess
 from salary_reference import reference
@@ -213,10 +215,18 @@ def metadata(connect, sources, history):
             COALESCE(SUM(favorite=1 OR status NOT IN ('Sin guardar','Descartada')),0) AS tracking,
             COALESCE(SUM(due_date<>'' AND due_date<=? AND status NOT IN ('Oferta','Descartada')),0) AS due
             FROM opportunities GROUP BY json_extract(payload,'$.kind')''', (today(),))}
+        c.create_function('tech_company', 1, tech_radar.company_id)
+        by_kind['startups'] = dict(c.execute('''SELECT COUNT(*) AS total,
+            COALESCE(SUM(available(payload,active)),0) AS active,
+            COALESCE(SUM(available(payload,active)*compatible(payload)),0) AS compatible,
+            COALESCE(SUM(favorite=1 OR status NOT IN ('Sin guardar','Descartada')),0) AS tracking,
+            COALESCE(SUM(due_date<>'' AND due_date<=? AND status NOT IN ('Oferta','Descartada')),0) AS due
+            FROM opportunities WHERE json_extract(payload,'$.kind')='empleo'
+            AND tech_company(json_extract(payload,'$.company'))<>?''' , (today(), '')).fetchone())
         runs = {r['source']: dict(r) for r in c.execute('SELECT * FROM runs')}
         duplicates = c.execute("SELECT COUNT(*) FROM (SELECT duplicate_key FROM opportunities WHERE duplicate_key<>'' GROUP BY duplicate_key HAVING COUNT(*)>1)").fetchone()[0]
     return {'sources': [dict(s, run=runs.get(s['id'])) for s in sources],
-            'states': STATES, 'history': history, 'profile': personal,
+            'states': STATES, 'history': history, 'profile': personal, 'tech_companies': tech_radar.catalog(),
             'stats': dict(totals, stages=stages, duplicate_groups=duplicates, by_kind=by_kind)}
 
 
@@ -254,6 +264,20 @@ def query(connect, params):
             where.append('unhandled(o.payload,o.duplicate_key,o.id)=1')
         if value('inactive') != '1':
             where.append('available(o.payload,o.active)=1')
+    if view == 'empleo':
+        if value('callcenter') == '1':
+            where.append('callcenter_match(o.payload)=1')
+        else:
+            where.append('(o.source<>? OR EXISTS (SELECT 1 FROM sightings cs '
+                         'WHERE cs.opportunity_id=o.id AND cs.source<>? AND cs.active=1))')
+            args.extend([call_center.SOURCE, call_center.SOURCE])
+    if view == 'empleo' and value('startups') == '1':
+        where.append("tech_company(json_extract(o.payload,'$.company'))<>''")
+        if value('tech_company'):
+            if value('tech_company') not in tech_radar.COMPANIES:
+                raise ValueError('Empresa del radar inválida')
+            where.append("tech_company(json_extract(o.payload,'$.company'))=?")
+            args.append(value('tech_company'))
     if view == 'evento':
         if value('discovery') == '1':
             where.append("json_extract(o.payload,'$.discovery_only')=1")
@@ -319,7 +343,13 @@ def query(connect, params):
         handled = {feed_group(r['payload'], r['duplicate_key'], r['id']) for r in c.execute("SELECT id,payload,duplicate_key FROM opportunities WHERE favorite=1 OR status<>'Sin guardar'")}
         c.create_function('unhandled', 3, lambda payload, key, item_id: int(not handled or feed_group(payload, key, item_id) not in handled))
         c.create_function('feed_group', 3, feed_group)
+        c.create_function('tech_company', 1, tech_radar.company_id)
         c.create_function('local_market', 1, lambda p: local_market(json.loads(p)))
+        def callcenter_match(payload):
+            item = json.loads(payload)
+            return int(call_center.matches(item, local_market(item)))
+
+        c.create_function('callcenter_match', 1, callcenter_match)
         c.create_function('event_allowed', 1, lambda p: int(eligible_event(json.loads(p))))
         c.create_function('fold', 1, fold)
         c.create_function('geo', 1, lambda p: geo(json.loads(p)))

@@ -168,3 +168,15 @@ El lanzador arranca `careeros.service` bajo demanda, espera la respuesta local y
 Pruebas de arranque: `python3 desktop_launcher.py --backend-only` y `python3 desktop_launcher.py --smoke-test`. Para abrir en el navegador: `python3 desktop_launcher.py --browser`. Si mueves la carpeta del proyecto, vuelve a ejecutar el instalador. La app usa la misma base de datos y las mismas claves locales; no las empaqueta ni sube. Apariencia y preferencias del navegador integrado se conservan por separado en ~/.local/share/careeros/webview.
 
 Archivos de integración: ~/.local/share/applications/io.careeros.CareerOS.desktop, iconos en ~/.local/share/icons/hicolor y ~/.config/systemd/user/careeros.service. Para retirar la integración, cierra la app, detén el servicio y elimina esos archivos; conserva el proyecto y su carpeta data para mantener tus oportunidades.
+
+## Filtro Startups y portales oficiales (21 de noviembre de 2026)
+
+Oportunidades incluye un botón **Startups** que combina el radar de startups y empresas tecnológicas seleccionadas con los filtros habituales. No hay una pestaña separada. El filtro se aplica en el servidor antes de agrupar y paginar; favoritos y postulaciones conservan su flujo habitual. `tech_radar.py` contiene nombres y variantes explícitas de empresas, sin clasificarlas por menciones dentro de la descripción.
+
+Se revisaron 19 portales: 17 lectores automáticos y dos accesos manuales. Cuatro lectores ya existían y se incorporaron 13. Los lectores verificados aportaron 211 anuncios antes de agrupar; no son puestos únicos ni una garantía de elegibilidad. La actualización respeta el intervalo de seis horas y se realiza con **Actualizar fuentes**.
+
+Sofka y Alegra utilizan páginas públicas de Teamtailor, con datos estructurados o campos visibles del detalle. Bold utiliza su catálogo público de Recruitee, comprobado sin credenciales en esta fecha; si exige autenticación, la carga falla conservando los registros anteriores. Platzi usa el widget público y detalles de Workable. Solum Health, Rebill y ARQ leen los puestos publicados por cada empresa en YC. Addi, Simetrik, Yuno y Belvo reutilizan los lectores de Ashby y Lever.
+
+Blend360 tiene cobertura parcial: contrasta el listado con dos fichas públicas conocidas. Ambas estaban marcadas inactivas en esta revisión; no se importan como vacantes abiertas. Una carga parcial conserva las observaciones anteriores y se identifica en el historial. Alegra aportó 14 anuncios verificables y seis detalles incompletos; esa carga también se conserva como parcial. Belvo y Kushki devolvieron cero anuncios compatibles verificables.
+
+Pomelo permanece como acceso manual: no se validó un catálogo automático. Ontop ofrece un formulario general de talento; no se presenta como una vacante. Ambos aparecen en Fuentes de datos con su enlace oficial y la limitación correspondiente. No se envían solicitudes ni se crean cuentas automáticamente.

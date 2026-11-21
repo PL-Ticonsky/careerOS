@@ -251,7 +251,9 @@
     "market_scope": "colombia",
     "interval_hours": 12,
     "max_pages": 2,
-    "integration_status": "ready"
+    "integration_status": "ready",
+    "tech_radar": true,
+    "company_url": "https://careers.smartrecruiters.com/Talan"
   },
   {
     "id": "recruitee",
@@ -466,7 +468,9 @@
     "market_scope": "colombia",
     "url": "https://job-boards.greenhouse.io/sezzle",
     "docs": "https://docs.greenhouse.io/job-board",
-    "note": "Conexión directa al portal público de Sezzle. Importa únicamente vacantes cuya ubicación publicada menciona Colombia o Bogotá; conserva otras ciudades colombianas cuando indican el país. No implica elegibilidad ni confirma modalidad. Consulta cada seis horas."
+    "note": "Conexión directa al portal público de Sezzle. Importa únicamente vacantes cuya ubicación publicada menciona Colombia o Bogotá; conserva otras ciudades colombianas cuando indican el país. No implica elegibilidad ni confirma modalidad. Consulta cada seis horas.",
+    "tech_radar": true,
+    "company_url": "https://job-boards.greenhouse.io/sezzle"
   },
   {
     "id": "greenhouse-antenna",
@@ -480,7 +484,9 @@
     "market_scope": "colombia",
     "url": "https://job-boards.greenhouse.io/Antenna",
     "docs": "https://docs.greenhouse.io/job-board",
-    "note": "Conexión directa al portal público de Antenna. Importa únicamente vacantes cuya ubicación publicada menciona Colombia o Bogotá; conserva otras ciudades colombianas cuando indican el país. No implica elegibilidad ni confirma modalidad. Consulta cada seis horas."
+    "note": "Conexión directa al portal público de Antenna. Importa únicamente vacantes cuya ubicación publicada menciona Colombia o Bogotá; conserva otras ciudades colombianas cuando indican el país. No implica elegibilidad ni confirma modalidad. Consulta cada seis horas.",
+    "tech_radar": true,
+    "company_url": "https://job-boards.greenhouse.io/Antenna"
   },
   {
     "id": "greenhouse-cobre",
@@ -494,7 +500,9 @@
     "market_scope": "colombia",
     "url": "https://job-boards.greenhouse.io/cobre",
     "docs": "https://docs.greenhouse.io/job-board",
-    "note": "Conexión directa al portal público de Cobre. Importa únicamente vacantes cuya ubicación publicada menciona Colombia o Bogotá; conserva otras ciudades colombianas cuando indican el país. No implica elegibilidad ni confirma modalidad. Consulta cada seis horas."
+    "note": "Conexión directa al portal público de Cobre. Importa únicamente vacantes cuya ubicación publicada menciona Colombia o Bogotá; conserva otras ciudades colombianas cuando indican el país. No implica elegibilidad ni confirma modalidad. Consulta cada seis horas.",
+    "tech_radar": true,
+    "company_url": "https://job-boards.greenhouse.io/cobre"
   },
   {
     "id": "lever-tryjeeves",
@@ -508,7 +516,9 @@
     "market_scope": "colombia",
     "url": "https://jobs.lever.co/tryjeeves",
     "docs": "https://github.com/lever/postings-api",
-    "note": "Conexión directa al portal público de Jeeves. Importa únicamente vacantes cuya ubicación publicada menciona Colombia o Bogotá; conserva otras ciudades colombianas cuando indican el país. No implica elegibilidad ni confirma modalidad. Consulta cada seis horas."
+    "note": "Conexión directa al portal público de Jeeves. Importa únicamente vacantes cuya ubicación publicada menciona Colombia o Bogotá; conserva otras ciudades colombianas cuando indican el país. No implica elegibilidad ni confirma modalidad. Consulta cada seis horas.",
+    "tech_radar": true,
+    "company_url": "https://jobs.lever.co/tryjeeves"
   },
   {
     "id": "lever-coupa",
@@ -522,7 +532,9 @@
     "market_scope": "colombia",
     "url": "https://jobs.lever.co/coupa",
     "docs": "https://github.com/lever/postings-api",
-    "note": "Conexión directa al portal público de Coupa. Importa únicamente vacantes cuya ubicación publicada menciona Colombia o Bogotá; conserva otras ciudades colombianas cuando indican el país. No implica elegibilidad ni confirma modalidad. Consulta cada seis horas."
+    "note": "Conexión directa al portal público de Coupa. Importa únicamente vacantes cuya ubicación publicada menciona Colombia o Bogotá; conserva otras ciudades colombianas cuando indican el país. No implica elegibilidad ni confirma modalidad. Consulta cada seis horas.",
+    "tech_radar": true,
+    "company_url": "https://jobs.lever.co/coupa"
   },
   {
     "id": "lever-bluelightconsulting",
@@ -536,6 +548,299 @@
     "market_scope": "colombia",
     "url": "https://jobs.lever.co/bluelightconsulting",
     "docs": "https://github.com/lever/postings-api",
-    "note": "Conexión directa al portal público de Bluelight Consulting. Importa únicamente vacantes cuya ubicación publicada menciona Colombia o Bogotá; conserva otras ciudades colombianas cuando indican el país. No implica elegibilidad ni confirma modalidad. Consulta cada seis horas."
+    "note": "Conexión directa al portal público de Bluelight Consulting. Importa únicamente vacantes cuya ubicación publicada menciona Colombia o Bogotá; conserva otras ciudades colombianas cuando indican el país. No implica elegibilidad ni confirma modalidad. Consulta cada seis horas.",
+    "tech_radar": true,
+    "company_url": "https://jobs.lever.co/bluelightconsulting"
+  },
+  {
+    "id": "ashby-addi",
+    "name": "Addi · portal oficial",
+    "company": "Addi",
+    "provider": "ashby",
+    "url": "https://jobs.ashbyhq.com/addi",
+    "company_url": "https://addi.com",
+    "category": "empleo",
+    "enabled": true,
+    "interval_hours": 6,
+    "market_scope": "colombia",
+    "integration_status": "ready",
+    "tech_radar": true,
+    "note": "Vacantes del portal oficial. Ubicación publicada en Colombia/Bogotá; conserva la descripción y el enlace de postulación. Consulta cada seis horas.",
+    "board": "addi"
+  },
+  {
+    "id": "ashby-simetrik",
+    "name": "Simetrik · portal oficial",
+    "company": "Simetrik",
+    "provider": "ashby",
+    "url": "https://jobs.ashbyhq.com/simetrik",
+    "company_url": "https://simetrik.com",
+    "category": "empleo",
+    "enabled": true,
+    "interval_hours": 6,
+    "market_scope": "colombia",
+    "integration_status": "ready",
+    "tech_radar": true,
+    "note": "Vacantes del portal oficial. Ubicación publicada en Colombia/Bogotá; conserva la descripción y el enlace de postulación. Consulta cada seis horas.",
+    "board": "simetrik",
+    "include_compatible_remote": true
+  },
+  {
+    "id": "lever-yuno",
+    "name": "Yuno · portal oficial",
+    "company": "Yuno",
+    "provider": "lever",
+    "url": "https://jobs.lever.co/yuno",
+    "company_url": "https://y.uno",
+    "category": "empleo",
+    "enabled": true,
+    "interval_hours": 6,
+    "market_scope": "colombia",
+    "integration_status": "ready",
+    "tech_radar": true,
+    "note": "Vacantes del portal oficial. Ubicación publicada en Colombia/Bogotá; conserva la descripción y el enlace de postulación. Consulta cada seis horas.",
+    "board": "yuno",
+    "include_compatible_remote": true
+  },
+  {
+    "id": "ashby-belvo",
+    "name": "Belvo · portal oficial",
+    "company": "Belvo",
+    "provider": "ashby",
+    "url": "https://jobs.ashbyhq.com/belvo",
+    "company_url": "https://belvo.com",
+    "category": "empleo",
+    "enabled": true,
+    "interval_hours": 6,
+    "market_scope": "colombia",
+    "integration_status": "ready",
+    "tech_radar": true,
+    "note": "Vacantes del portal oficial. Ubicación publicada en Colombia/Bogotá; conserva la descripción y el enlace de postulación. Consulta cada seis horas.",
+    "board": "belvo",
+    "include_compatible_remote": true
+  },
+  {
+    "id": "teamtailor-sofka",
+    "name": "Sofka · portal oficial",
+    "company": "Sofka",
+    "provider": "teamtailor_web",
+    "url": "https://oportunidades.sofka.com.co/jobs",
+    "company_url": "https://sofka.com.co",
+    "category": "empleo",
+    "enabled": true,
+    "interval_hours": 6,
+    "market_scope": "colombia",
+    "integration_status": "ready",
+    "tech_radar": true,
+    "note": "Lee las vacantes estructuradas del portal público de Sofka y su paginación. Incluye convocatorias de Sofka U identificadas como entrenamiento, sin prometer contratación posterior. Importa ubicaciones explícitas en Colombia/Bogotá; no requiere una clave privada de Teamtailor.",
+    "allowed_hosts": [
+      "oportunidades.sofka.com.co"
+    ],
+    "max_pages": 5,
+    "max_jobs": 120
+  },
+  {
+    "id": "teamtailor-alegra",
+    "name": "Alegra · portal oficial",
+    "company": "Alegra",
+    "provider": "teamtailor_web",
+    "url": "https://jobs.alegra.com/jobs",
+    "company_url": "https://alegra.com",
+    "category": "empleo",
+    "enabled": true,
+    "interval_hours": 6,
+    "market_scope": "colombia",
+    "integration_status": "ready",
+    "tech_radar": true,
+    "note": "Lee vacantes estructuradas de Alegra. Incluye Colombia/Bogotá y puestos remotos con una región compatible explícita; remoto sin país publicado queda sin importar. Portal y formulario oficiales.",
+    "allowed_hosts": [
+      "jobs.alegra.com"
+    ],
+    "max_pages": 5,
+    "max_jobs": 120,
+    "include_compatible_remote": true
+  },
+  {
+    "id": "recruitee-bold",
+    "name": "Bold · portal oficial",
+    "company": "Bold",
+    "provider": "recruitee_public",
+    "url": "https://jobs.bold.co",
+    "company_url": "https://bold.co",
+    "category": "empleo",
+    "enabled": true,
+    "interval_hours": 6,
+    "market_scope": "colombia",
+    "integration_status": "ready",
+    "tech_radar": true,
+    "note": "Catálogo público de Bold verificado sin credenciales en esta revisión. Conserva ubicaciones y formulario oficial. Si Recruitee exige autenticación o cambia el acceso, registra el error y conserva los anuncios anteriores; no dispone de un token emitido por Bold.",
+    "allowed_hosts": [
+      "jobs.bold.co"
+    ]
+  },
+  {
+    "id": "workable-platzi",
+    "name": "Platzi · portal oficial",
+    "company": "Platzi",
+    "provider": "workable_public",
+    "url": "https://apply.workable.com/platzi/",
+    "company_url": "https://platzi.com",
+    "category": "empleo",
+    "enabled": true,
+    "interval_hours": 6,
+    "market_scope": "colombia",
+    "integration_status": "ready",
+    "tech_radar": true,
+    "note": "Widget público de vacantes de Platzi y detalles estructurados de Workable. Filtra por ubicación de la vacante, no por sede; agrupa el mismo código antes de importar. Postulación en el formulario oficial.",
+    "board": "platzi",
+    "allowed_hosts": [
+      "apply.workable.com"
+    ]
+  },
+  {
+    "id": "smartrecruiters-blend360",
+    "name": "Blend360 · portal oficial",
+    "company": "Blend360",
+    "provider": "smartrecruiters",
+    "url": "https://www.blend360.com/es/careers",
+    "company_url": "https://www.blend360.com",
+    "category": "empleo",
+    "enabled": true,
+    "interval_hours": 6,
+    "market_scope": "colombia",
+    "integration_status": "ready",
+    "tech_radar": true,
+    "note": "Cobertura parcial de Blend360: el listado y las fichas individuales difieren. Lee el catálogo público y vuelve a verificar dos fichas de Bogotá localizadas en su portal oficial. No representa todas las vacantes ni interpreta una ausencia como cierre. Conserva los registros anteriores cuando la carga es parcial.",
+    "board": "Blend360",
+    "max_pages": 3,
+    "country_filter": false,
+    "seed_postings": [
+      "744000149078761",
+      "744000155829129"
+    ],
+    "partial_catalog": true
+  },
+  {
+    "id": "yc-solum-health",
+    "name": "Solum Health · portal oficial",
+    "company": "Solum Health",
+    "provider": "yc_public",
+    "url": "https://www.ycombinator.com/companies/solum-health/jobs",
+    "company_url": "https://www.ycombinator.com/companies/solum-health",
+    "category": "empleo",
+    "enabled": true,
+    "interval_hours": 6,
+    "market_scope": "colombia",
+    "integration_status": "ready",
+    "tech_radar": true,
+    "note": "Vacantes publicadas por la empresa en Y Combinator: ubicación, descripción estructurada y formulario de postulación. Solo importa anuncios que incluyen Colombia/Bogotá explícitamente; la cuenta YC puede ser necesaria al postular.",
+    "board": "solum-health",
+    "allowed_hosts": [
+      "www.ycombinator.com"
+    ]
+  },
+  {
+    "id": "yc-rebill",
+    "name": "Rebill · portal oficial",
+    "company": "Rebill",
+    "provider": "yc_public",
+    "url": "https://www.ycombinator.com/companies/rebill/jobs",
+    "company_url": "https://www.ycombinator.com/companies/rebill",
+    "category": "empleo",
+    "enabled": true,
+    "interval_hours": 6,
+    "market_scope": "colombia",
+    "integration_status": "ready",
+    "tech_radar": true,
+    "note": "Vacantes publicadas por la empresa en Y Combinator: ubicación, descripción estructurada y formulario de postulación. Solo importa anuncios que incluyen Colombia/Bogotá explícitamente; la cuenta YC puede ser necesaria al postular.",
+    "board": "rebill",
+    "allowed_hosts": [
+      "www.ycombinator.com"
+    ]
+  },
+  {
+    "id": "yc-arq",
+    "name": "ARQ · portal oficial",
+    "company": "ARQ",
+    "provider": "yc_public",
+    "url": "https://www.ycombinator.com/companies/arq/jobs",
+    "company_url": "https://www.ycombinator.com/companies/arq",
+    "category": "empleo",
+    "enabled": true,
+    "interval_hours": 6,
+    "market_scope": "colombia",
+    "integration_status": "ready",
+    "tech_radar": true,
+    "note": "Vacantes publicadas por la empresa en Y Combinator: ubicación, descripción estructurada y formulario de postulación. Solo importa anuncios que incluyen Colombia/Bogotá explícitamente; la cuenta YC puede ser necesaria al postular.",
+    "board": "arq",
+    "allowed_hosts": [
+      "www.ycombinator.com"
+    ]
+  },
+  {
+    "id": "kushki-public",
+    "name": "Kushki · portal oficial",
+    "company": "Kushki",
+    "provider": "kushki_public",
+    "url": "https://www.kushkipagos.com/careers-kushki",
+    "company_url": "https://www.kushkipagos.com",
+    "category": "empleo",
+    "enabled": true,
+    "interval_hours": 6,
+    "market_scope": "colombia",
+    "integration_status": "ready",
+    "tech_radar": true,
+    "note": "Lee el catálogo que publica la página oficial de Kushki. En la revisión inicial su lista contiene cero anuncios; esto no demuestra ausencia de contratación por otros canales. Si cambia el formato, conserva la carga anterior.",
+    "allowed_hosts": [
+      "www.kushkipagos.com",
+      "jobs.smartrecruiters.com"
+    ]
+  },
+  {
+    "id": "portal-pomelo",
+    "name": "Pomelo · portal oficial",
+    "company": "Pomelo",
+    "provider": "manual",
+    "url": "https://pomelo.la/en/work-with-us",
+    "company_url": "https://pomelo.la/en/work-with-us",
+    "category": "empleo",
+    "enabled": false,
+    "interval_hours": 6,
+    "market_scope": "colombia",
+    "integration_status": "access_review",
+    "tech_radar": true,
+    "note": "El portal muestra las oportunidades mediante carga dinámica; su lectura y el catálogo de contratación aún no pudieron validarse. Se conserva el acceso oficial para consultar y postular manualmente."
+  },
+  {
+    "id": "portal-ontop",
+    "name": "Ontop · portal oficial",
+    "company": "Ontop",
+    "provider": "manual",
+    "url": "https://www.getontop.com/careers",
+    "company_url": "https://www.getontop.com/careers",
+    "category": "empleo",
+    "enabled": false,
+    "interval_hours": 6,
+    "market_scope": "colombia",
+    "integration_status": "access_review",
+    "tech_radar": true,
+    "note": "La página ofrece un formulario general y un canal de talento, sin un catálogo verificable de puestos concretos en esta revisión. Consulta el sitio oficial; no se importan formularios generales como si fueran vacantes."
+  },
+  {
+    "id": "serpapi-callcenter",
+    "name": "Google Jobs · Call center",
+    "provider": "serpapi",
+    "enabled": false,
+    "on_demand": true,
+    "category": "empleo",
+    "url": "https://serpapi.com/google-jobs-api",
+    "interval_hours": 24,
+    "max_pages": 1,
+    "queries": [
+      "agente call center presencial Bogotá Colombia",
+      "agente call center remoto Colombia",
+      "asesor call center trabajo desde casa Colombia"
+    ],
+    "note": "Se actualiza desde Oportunidades con el filtro Call center activo. Hasta tres búsquedas cada 24 horas. Incluye presencial en Bogotá y remoto compatible con Colombia."
   }
 ]

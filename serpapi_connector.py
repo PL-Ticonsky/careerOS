@@ -1,5 +1,6 @@
 """Google Jobs discovery through SerpApi, with bounded searches and private keys."""
 import json
+import call_center
 import os
 from pathlib import Path
 import re
@@ -113,7 +114,12 @@ def collect(source, credential, normalize, valid_url, batch_class, local_market,
                 try:
                     item = record(source, row, normalize, valid_url)
                     # Search origin is not proof that a remote role accepts Colombia.
-                    if local_market(item) < 2: continue
+                    if source['id'] == call_center.SOURCE:
+                        item['mode'] = call_center.mode(item)
+                        if not call_center.matches(item, local_market(item)):
+                            continue
+                    elif local_market(item) < 2:
+                        continue
                     accepted += 1
                     if item['id'] in by_id:
                         previous = by_id[item['id']]

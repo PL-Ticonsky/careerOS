@@ -144,4 +144,26 @@ class JobConnectorsTest(unittest.TestCase):
         self.assertEqual(search.call_args.args[0]['location'], 'Bogotá, Colombia')
 
 
+    def test_partial_empty_catalog_preserves_previous_jobs(self):
+        source = dict(self.source('smartrecruiters'), enabled=True, partial_catalog=True, country_filter=False)
+        previous = self.job(source='smartrecruiters'); app.store([previous], 'smartrecruiters')
+        with patch.object(app, 'sources', return_value=[source]), patch.object(app, 'fetch', return_value={'content': [], 'totalFound': 0}):
+            result = app.sync()
+        self.assertTrue(result['results'][0]['partial'])
+        self.assertTrue(workspace.detail(app.connect, previous['id'])['active'])
+
+    def test_inactive_public_detail_is_not_an_open_vacancy(self):
+        source = dict(self.source('smartrecruiters'), seed_postings=['1'], partial_catalog=True, country_filter=False)
+        closed = self.smart(); closed['active'] = False
+        with patch.object(app, 'fetch', side_effect=[{'content': [], 'totalFound': 0}, closed]):
+            batch = app.collect(source)
+        self.assertEqual(len(batch), 0)
+        self.assertTrue(batch.partial)
+
+    def test_smartrecruiters_punctuation_location_uses_city_country(self):
+        row = self.smart(); row['location']['fullLocation'] = ', '
+        parsed = job_connectors.smartrecruiters_record(self.source('smartrecruiters'), row, app.normalize, app.valid_url)
+        self.assertEqual(parsed['location'], 'Bogotá, Colombia')
+
+
 del BaseTests

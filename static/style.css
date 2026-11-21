@@ -57,3 +57,5 @@ body.nav-collapsed{--nav-width:80px}body.nav-collapsed nav button{flex-direction
 
 /* CareerOS compass: the same mark in the header, launcher and favicon. */
 .brand{gap:9px}.brand>img{width:32px;height:32px;display:block;flex-shrink:0;border-radius:9px}.brand strong{letter-spacing:-.55px}@media(max-width:430px){.brand{gap:0}.brand>img{width:30px;height:30px}}
+
+#startups-toggle[aria-pressed="true"],#callcenter-toggle[aria-pressed="true"]{background:var(--accent,#3ea6ff);color:#08131d;border-color:var(--accent,#3ea6ff);font-weight:700}

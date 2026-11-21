@@ -77,3 +77,31 @@ La prueba antigua de Get on Board con HTTP 403 dejó de reproducirse para su API
 MLH: se añadió un lector del calendario público de temporada, sin API privada ni credenciales. La carga verificada de 2027 contiene únicamente eventos presenciales fuera de Bogotá y por tanto aporta cero convocatorias al radar personal en esta revisión. El conector sigue activo para futuras actualizaciones del calendario.
 
 SerpApi: se añadió el adaptador de Google Jobs con clave privada local. El estado de cuenta se consulta sin consumir búsquedas. La carga se limita a cinco búsquedas por día con la configuración inicial; no cambia el plan ni compra créditos. La cobertura depende de los resultados y enlaces devueltos por Google; no garantiza todo LinkedIn ni otros portales.
+
+## Portales del filtro Startups · revisión del 21 de noviembre de 2026
+
+Las cifras siguientes son anuncios importables en la revisión, antes de agrupar, con ubicación explícita compatible. Los remotos regionales solo entran cuando su ubicación publicada permite la región; una sede no acredita elegibilidad. Los errores o cargas parciales conservan las observaciones previas.
+
+| Portal | Método | Resultado de la revisión |
+|---|---|---|
+| Sofka | Teamtailor público, detalle estructurado | 8 |
+| Blend360 | SmartRecruiters, cobertura parcial y fichas verificadas | 0 activas compatibles; dos fichas conocidas inactivas |
+| Addi | Ashby | 22 |
+| Simetrik | Ashby | 3 |
+| Yuno | Lever | 2 |
+| Jeeves | Lever, existente | 15 |
+| Cobre | Greenhouse, existente | 8 |
+| Sezzle | Greenhouse, existente | 47 |
+| Antenna | Greenhouse, existente | 3 |
+| Bold | Recruitee público, acceso comprobado sin clave | 61; requiere revisar el acceso si la plataforma exige token |
+| Alegra | Teamtailor público, detalle visible | 14; seis detalles incompletos, carga parcial |
+| Belvo | Ashby | 0 compatibles en la revisión |
+| Kushki | Catálogo público de su página | 0 publicados en la respuesta del portal |
+| Pomelo | Acceso manual | Lectura automática sin validar |
+| Ontop | Acceso manual | Formulario general de talento, sin catálogo de vacantes verificado |
+| Platzi | Workable público | 11 |
+| Solum Health | Publicaciones de la empresa en YC | 4 |
+| Rebill | Publicaciones de la empresa en YC | 4 |
+| ARQ | Publicaciones de la empresa en YC | 9 |
+
+Los enlaces exactos, cobertura y estado se mantienen en `sources.json`. `job_portals.py` no envía candidaturas. Las APIs de contratación no ofrecen acceso al estado privado de una candidatura solo por conocer su anuncio público.
